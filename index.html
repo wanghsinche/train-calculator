@@ -21,10 +21,9 @@ body {
   margin: 0 auto;
 }
 
-.flag { display: inline-block; width: 18px; height: 14px; vertical-align: middle; border-radius: 1px; margin-right: 2px; }
-.flag-sm { width: 14px; height: 10px; }
+.flag { display: inline-block; width: 16px; height: 12px; vertical-align: middle; border-radius: 1px; margin-right: 2px; }
 
-/* ====== TOP: Client Screenshot Area ====== */
+/* ====== CLIENT SCREENSHOT AREA ====== */
 .client-area {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -53,110 +52,94 @@ body {
 
 .client-body {
   flex: 1;
-  padding: 16px 20px;
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
 }
 
-/* Rate board - bank style table */
-.rate-board {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  border: 1px solid #e2e8f0;
-  flex-shrink: 0;
-}
-.rate-cell {
-  text-align: center;
-  padding: 8px 4px;
-  border-right: 1px solid #e2e8f0;
-}
-.rate-cell:last-child { border-right: none; }
-.rate-cell .label { font-size: 11px; color: #64748b; margin-bottom: 2px; display: flex; align-items: center; justify-content: center; gap: 3px; }
-.rate-cell .value { font-size: 17px; font-weight: 700; color: #1e3a5f; }
-.rate-cell .sub { font-size: 10px; color: #94a3b8; margin-top: 1px; }
-
-/* Divider */
-.section-divider { border: none; border-top: 1px solid #e2e8f0; margin: 12px 0; flex-shrink: 0; }
-
-/* Form - underline style */
-.form-row {
-  display: flex;
-  gap: 12px;
-  align-items: flex-end;
-  flex-shrink: 0;
-}
-.form-row .form-group { flex: 1; }
-.form-group { margin-bottom: 0; }
-.form-group label {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #64748b;
-  margin-bottom: 4px;
-  letter-spacing: 0.3px;
-}
-.form-group input {
-  width: 100%;
-  padding: 6px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1e293b;
-  border: none;
-  border-bottom: 1.5px solid #d0d5dd;
-  outline: none;
-  background: transparent;
-  transition: border-color .2s;
-}
-.form-group input:focus { border-color: #1e3a5f; }
-.form-group input::placeholder { color: #cbd5e1; font-weight: 400; font-size: 16px; }
-
-.total-hint {
-  text-align: right;
-  font-size: 12px;
-  color: #64748b;
-  margin-top: 6px;
-  margin-bottom: 12px;
-  flex-shrink: 0;
-}
-
-/* Result box - flex to fill */
-.result-box-wrap {
+/* Converter panel */
+.converter {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
 }
-.result-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  text-align: center;
-  padding: 18px;
-}
-.result-box .result-label {
-  font-size: 12px;
+.converter-row { margin-bottom: 0; }
+.converter-row .currency-label {
+  font-size: 13px;
+  font-weight: 500;
   color: #64748b;
-  margin-bottom: 2px;
-  letter-spacing: 0.5px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 4px;
 }
-.result-box .result-amount {
-  font-size: 44px;
-  font-weight: 800;
-  color: #1e3a5f;
-  line-height: 1.1;
-  letter-spacing: -1px;
+.converter-row input {
+  width: 100%;
+  padding: 14px 0;
+  font-size: 36px;
+  font-weight: 700;
+  color: #1e293b;
+  border: none;
+  border-bottom: 2px solid #e2e8f0;
+  outline: none;
+  background: transparent;
+  transition: border-color .2s;
+  letter-spacing: -0.5px;
+}
+.converter-row input:focus { border-color: #1e3a5f; }
+.converter-row input::placeholder { color: #cbd5e1; font-weight: 400; font-size: 28px; }
+
+.converter-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  padding: 8px 0 6px;
+  color: #94a3b8;
+  font-size: 20px;
+  user-select: none;
 }
-.result-box .result-amount .cur { font-size: 20px; font-weight: 600; margin-right: 2px; }
-.result-box .result-sub { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+
+.converter-result .currency-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.converter-result .result-value {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1e3a5f;
+  letter-spacing: -0.5px;
+  padding: 14px 0;
+  border-bottom: 2px solid #e2e8f0;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+}
+
+/* Sell rate footer */
+.sell-rate-footer {
+  margin-top: auto;
+  text-align: right;
+  padding-top: 12px;
+}
+.sell-rate-footer .rate-line {
+  font-size: 12px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.sell-rate-footer .disclaimer {
+  font-size: 11px;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
 
 /* ====== DIVIDER ====== */
 .internal-divider {
@@ -178,7 +161,7 @@ body {
   background: #e2e8f0;
 }
 
-/* ====== BOTTOM: Internal Reference ====== */
+/* ====== INTERNAL AREA ====== */
 .internal-area {
   background: #f1f4f9;
   border: 1px solid #e2e8f0;
@@ -192,13 +175,38 @@ body {
   color: #1e3a5f;
   margin-bottom: 10px;
 }
+
+/* Internal form */
+.int-form { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 12px; flex-wrap: wrap; }
+.int-form .fg { flex: 1; min-width: 80px; }
+.int-form .fg label { display: block; font-size: 11px; color: #64748b; margin-bottom: 2px; }
+.int-form .fg input {
+  width: 100%;
+  padding: 6px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  border: none;
+  border-bottom: 1.5px solid #d0d5dd;
+  outline: none;
+  background: transparent;
+}
+.int-form .fg input:focus { border-color: #1e3a5f; }
+.int-form .total-badge {
+  font-size: 13px;
+  color: #1e3a5f;
+  font-weight: 600;
+  white-space: nowrap;
+  padding-bottom: 6px;
+}
+
 .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; font-size: 13px; margin-bottom: 14px; }
 .detail-grid .item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #e2e8f0; }
 .detail-grid .item .l { color: #64748b; }
 .detail-grid .item .r { font-weight: 600; color: #1e293b; }
 .detail-grid .item .r.profit { color: #059669; }
 
-/* Script area */
+/* Script */
 .script-wrap { position: relative; }
 .script-wrap textarea {
   width: 100%;
@@ -293,29 +301,20 @@ body {
 @media (max-width: 420px) {
   .client-header { padding: 12px 14px; }
   .client-header h1 { font-size: 14px; }
-  .client-body { padding: 12px 14px; }
-  .rate-board { margin-bottom: 0; }
-  .rate-cell { padding: 6px 2px; }
-  .rate-cell .value { font-size: 15px; }
-  .section-divider { margin: 10px 0; }
-  .form-group input { font-size: 18px; }
-  .total-hint { margin-bottom: 10px; }
-  .result-box { padding: 14px; }
-  .result-box .result-amount { font-size: 36px; }
-  .result-box .result-amount .cur { font-size: 16px; }
+  .client-body { padding: 16px 18px; }
+  .converter-row input { font-size: 28px; padding: 10px 0; }
+  .converter-row input::placeholder { font-size: 22px; }
+  .converter-result .result-value { font-size: 28px; padding: 10px 0; min-height: 56px; }
+  .converter-divider { padding: 4px 0; font-size: 16px; }
   .internal-area { padding: 14px; }
 }
 @media (max-height: 640px) {
   .client-header { padding: 10px 14px; }
-  .client-body { padding: 10px 14px; }
-  .rate-cell { padding: 5px 2px; }
-  .rate-cell .value { font-size: 14px; }
-  .section-divider { margin: 6px 0; }
-  .form-group input { font-size: 16px; padding: 4px 0; }
-  .result-box { padding: 10px; }
-  .result-box .result-amount { font-size: 30px; }
-  .result-box .result-amount .cur { font-size: 14px; }
-  .total-hint { margin-bottom: 6px; font-size: 11px; }
+  .client-body { padding: 12px 18px; }
+  .converter-row input { font-size: 24px; padding: 8px 0; }
+  .converter-row input::placeholder { font-size: 18px; }
+  .converter-result .result-value { font-size: 24px; padding: 8px 0; min-height: 44px; }
+  .converter-divider { padding: 2px 0; font-size: 14px; }
 }
 </style>
 </head>
@@ -330,54 +329,33 @@ body {
 
 <div class="container">
 
-  <!-- ========== CLIENT AREA (screenshot this) ========== -->
-  <div class="client-area" id="clientArea">
+  <!-- ========== CLIENT AREA ========== -->
+  <div class="client-area">
 
     <div class="client-header">
       <h1>MYR ⇄ CNY 汇率换算</h1>
       <div class="header-flags">
-        <img src="https://flagcdn.com/24x18/cn.png" alt="CN" loading="lazy">
         <img src="https://flagcdn.com/24x18/my.png" alt="MY" loading="lazy">
+        <img src="https://flagcdn.com/24x18/cn.png" alt="CN" loading="lazy">
       </div>
     </div>
 
     <div class="client-body">
 
-      <!-- Rate Board -->
-      <div class="rate-board">
-        <div class="rate-cell">
-          <div class="label"><img class="flag" src="https://flagcdn.com/18x14/cn.png" alt="" loading="lazy">买入</div>
-          <div class="value" id="buyRate">—</div>
-          <div class="sub">1 CNY <img class="flag flag-sm" src="https://flagcdn.com/14x10/my.png" alt="" loading="lazy"></div>
-        </div>
-        <div class="rate-cell">
-          <div class="label"><img class="flag" src="https://flagcdn.com/18x14/cn.png" alt="" loading="lazy">卖出</div>
-          <div class="value" id="sellRate">—</div>
-          <div class="sub">1 CNY <img class="flag flag-sm" src="https://flagcdn.com/14x10/my.png" alt="" loading="lazy"></div>
-        </div>
-        <div class="rate-cell">
-          <div class="label">中间汇率</div>
-          <div class="value" id="midRate">—</div>
-          <div class="sub">1 CNY</div>
-        </div>
-      </div>
+      <div class="converter">
 
-      <hr class="section-divider">
-
-      <!-- Inputs -->
-      <div class="form-row">
-        <div class="form-group">
-          <label><img class="flag" src="https://flagcdn.com/18x14/my.png" alt="" loading="lazy">单张票价</label>
-          <input type="number" id="ticketPrice" step="0.01" min="0" placeholder="0.00">
+        <div class="converter-row">
+          <div class="currency-label"><img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy"> Malaysian Ringgit</div>
+          <input type="text" id="myrInput" inputmode="decimal" placeholder="0.00">
         </div>
-        <div class="form-group" style="flex:0 0 80px">
-          <label>张数</label>
-          <input type="number" id="ticketQty" value="2" min="1" step="1">
-        </div>
-      </div>
 
-      <div class="total-hint" id="totalHint">
-        <img class="flag flag-sm" src="https://flagcdn.com/14x10/my.png" alt="" loading="lazy"> 马币总计: RM —
+        <div class="converter-divider">▼</div>
+
+        <div class="converter-result">
+          <div class="currency-label"><img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy"> Chinese Yuan</div>
+          <div class="result-value" id="cnyDisplay"><span style="color:#94a3b8;font-weight:400;font-size:20px">0.00</span></div>
+        </div>
+
       </div>
 
       <!-- Manual rate -->
@@ -386,23 +364,39 @@ body {
         <input type="number" id="manualRate" step="0.0001" min="0.01" value="0.61" placeholder="0.61">
       </div>
 
-      <!-- Result -->
-      <div class="result-box-wrap">
-        <div class="result-box" id="resultBox">
-          <div class="result-label"><img class="flag" src="https://flagcdn.com/18x14/cn.png" alt="" loading="lazy">人民币金额</div>
-          <div class="result-amount"><span class="cur">CNY</span><span id="resultAmount">—</span></div>
-          <div class="result-sub">汇率仅供参考，以实际出票为准</div>
+      <!-- Sell rate footer -->
+      <div class="sell-rate-footer">
+        <div class="rate-line">
+          <img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy">
+          卖出汇率
+          <span id="sellRateDisplay">—</span>
+          <img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy">
         </div>
+        <div class="disclaimer">仅供参考，以实际出票为准</div>
       </div>
 
     </div>
   </div>
 
-  <!-- ========== INTERNAL DIVIDER ========== -->
+  <!-- ========== DIVIDER ========== -->
   <div class="internal-divider">内部参考</div>
 
   <!-- ========== INTERNAL AREA ========== -->
   <div class="internal-area">
+
+    <div class="section-title">票务信息</div>
+
+    <div class="int-form">
+      <div class="fg">
+        <label><img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy">单张票价</label>
+        <input type="number" id="perPrice" step="0.01" min="0" placeholder="0.00">
+      </div>
+      <div class="fg" style="flex:0 0 70px">
+        <label>张数</label>
+        <input type="number" id="qtyInput" value="2" min="1" step="1">
+      </div>
+      <div class="total-badge" id="totalBadge">RM —</div>
+    </div>
 
     <div class="section-title">计算明细</div>
 
@@ -410,7 +404,6 @@ body {
       <div class="item"><span class="l">官方汇率</span><span class="r" id="intOfficial">—</span></div>
       <div class="item"><span class="l">报价汇率</span><span class="r" id="intQuote">—</span></div>
       <div class="item"><span class="l">马币总计</span><span class="r" id="intMYR">—</span></div>
-      <div class="item"><span class="l">张数</span><span class="r" id="intQty">—</span></div>
       <div class="item"><span class="l">人民币总价</span><span class="r" id="intCNY">—</span></div>
       <div class="item"><span class="l">预计利润</span><span class="r profit" id="intProfit">—</span></div>
     </div>
@@ -430,22 +423,21 @@ body {
 (function() {
   let officialRate = null;
   let quoteRate = null;
+  let updating = false;
 
   const DOM = {
     loading: document.getElementById('loadingOverlay'),
-    buyRate: document.getElementById('buyRate'),
-    sellRate: document.getElementById('sellRate'),
-    midRate: document.getElementById('midRate'),
-    ticketPrice: document.getElementById('ticketPrice'),
-    ticketQty: document.getElementById('ticketQty'),
-    totalHint: document.getElementById('totalHint'),
-    resultAmount: document.getElementById('resultAmount'),
+    myrInput: document.getElementById('myrInput'),
+    cnyDisplay: document.getElementById('cnyDisplay'),
+    sellRateDisplay: document.getElementById('sellRateDisplay'),
     manualRateArea: document.getElementById('manualRateArea'),
     manualRate: document.getElementById('manualRate'),
+    perPrice: document.getElementById('perPrice'),
+    qtyInput: document.getElementById('qtyInput'),
+    totalBadge: document.getElementById('totalBadge'),
     intOfficial: document.getElementById('intOfficial'),
     intQuote: document.getElementById('intQuote'),
     intMYR: document.getElementById('intMYR'),
-    intQty: document.getElementById('intQty'),
     intCNY: document.getElementById('intCNY'),
     intProfit: document.getElementById('intProfit'),
     scriptText: document.getElementById('scriptText'),
@@ -462,63 +454,121 @@ body {
     toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
   }
 
-  function fmt(v, decimals) {
-    return Number(v).toFixed(decimals);
+  function fmt(v, d) { return Number(v).toFixed(d); }
+
+  function formatNum(n) {
+    const s = fmt(n, 2);
+    const parts = s.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
   }
 
-  function calculate() {
+  function updateAll() {
     if (officialRate === null) return;
 
-    const perPrice = parseFloat(DOM.ticketPrice.value);
-    const qty = parseInt(DOM.ticketQty.value) || 0;
+    const totalMYR = parseFloat(DOM.myrInput.value) || 0;
 
-    if (!perPrice || perPrice <= 0 || !qty || qty <= 0) {
-      DOM.totalHint.innerHTML = '<img class="flag flag-sm" src="https://flagcdn.com/14x10/my.png" alt="" loading="lazy"> 马币总计: RM —';
-      DOM.resultAmount.textContent = '—';
-      DOM.sellRate.textContent = '—';
-      DOM.midRate.textContent = '—';
-      DOM.intOfficial.textContent = '—';
-      DOM.intQuote.textContent = '—';
-      DOM.intMYR.textContent = '—';
-      DOM.intQty.textContent = '—';
-      DOM.intCNY.textContent = '—';
-      DOM.intProfit.textContent = '—';
-      DOM.scriptText.value = '';
+    if (totalMYR <= 0) {
+      DOM.cnyDisplay.innerHTML = '<span style="color:#94a3b8;font-weight:400;font-size:20px">0.00</span>';
+      DOM.sellRateDisplay.textContent = '—';
+      clearInternal();
       return;
     }
 
-    const totalMYR = perPrice * qty;
     const qRate = officialRate - 0.05;
     quoteRate = qRate;
 
-    DOM.sellRate.textContent = fmt(qRate, 4);
-    DOM.buyRate.textContent = fmt(officialRate, 4);
-    DOM.midRate.textContent = fmt((officialRate + qRate) / 2, 4);
-
-    DOM.totalHint.innerHTML = '<img class="flag flag-sm" src="https://flagcdn.com/14x10/my.png" alt="" loading="lazy"> 马币总计: RM ' + fmt(totalMYR, 2);
+    DOM.sellRateDisplay.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
 
     let cny = totalMYR / qRate;
+    const qty = parseInt(DOM.qtyInput.value) || 0;
     if (qty >= 4) {
       cny = Math.floor(cny / 10) * 10;
     } else {
       cny = Math.round(cny);
     }
 
-    DOM.resultAmount.textContent = fmt(cny, 0);
+    DOM.cnyDisplay.textContent = fmt(cny, 0);
+
+    // Internal
+    const perPrice = parseFloat(DOM.perPrice.value) || 0;
+    const intQty = qty || 0;
+
+    if (perPrice > 0 && intQty > 0) {
+      DOM.totalBadge.textContent = 'RM ' + fmt(perPrice * intQty, 2);
+    } else {
+      DOM.totalBadge.textContent = 'RM —';
+    }
 
     DOM.intOfficial.textContent = '1 CNY = ' + fmt(officialRate, 4) + ' MYR';
     DOM.intQuote.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
     DOM.intMYR.textContent = 'RM ' + fmt(totalMYR, 2);
-    DOM.intQty.textContent = qty + ' 张';
     DOM.intCNY.textContent = '¥' + cny;
 
     const cost = totalMYR / officialRate;
     const profit = cny - cost;
     DOM.intProfit.textContent = '¥' + fmt(profit, 2);
 
-    const script = `亲亲，${qty} 张车票一共是 ${fmt(totalMYR, 2)} 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ${fmt(qRate, 4)} 马币。总共是 ${cny} 元人民币。您直接转账就行，付完款我这边立刻登录马铁官网帮您出票，把 PDF 电子票发您。`;
-    DOM.scriptText.value = script;
+    // Script
+    if (perPrice > 0 && intQty > 0) {
+      const s = `亲亲，${intQty} 张车票一共是 ${fmt(perPrice * intQty, 2)} 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ${fmt(qRate, 4)} 马币。总共是 ${cny} 元人民币。您直接转账就行，付完款我这边立刻登录马铁官网帮您出票，把 PDF 电子票发您。`;
+      DOM.scriptText.value = s;
+    }
   }
+
+  function clearInternal() {
+    DOM.totalBadge.textContent = 'RM —';
+    DOM.intOfficial.textContent = '—';
+    DOM.intQuote.textContent = '—';
+    DOM.intMYR.textContent = '—';
+    DOM.intCNY.textContent = '—';
+    DOM.intProfit.textContent = '—';
+    DOM.scriptText.value = '';
+  }
+
+  // Client MYR input → triggers full update
+  DOM.myrInput.addEventListener('input', function() {
+    if (updating) return;
+    const totalMYR = parseFloat(this.value) || 0;
+    const qty = parseInt(DOM.qtyInput.value) || 1;
+    if (qty > 0) {
+      updating = true;
+      DOM.perPrice.value = totalMYR > 0 ? fmt(totalMYR / qty, 2) : '';
+      updating = false;
+    }
+    updateAll();
+  });
+
+  // Internal price/qty → sync to client MYR
+  function syncFromInternal() {
+    if (updating) return;
+    const perPrice = parseFloat(DOM.perPrice.value) || 0;
+    const qty = parseInt(DOM.qtyInput.value) || 0;
+    if (perPrice > 0 && qty > 0) {
+      updating = true;
+      DOM.myrInput.value = fmt(perPrice * qty, 2);
+      updating = false;
+      updateAll();
+    } else {
+      updateAll();
+    }
+  }
+
+  DOM.perPrice.addEventListener('input', syncFromInternal);
+  DOM.qtyInput.addEventListener('input', function() {
+    syncFromInternal();
+    // Also re-multiply: update perPrice display if myrInput has value
+    if (!updating) {
+      const totalMYR = parseFloat(DOM.myrInput.value) || 0;
+      const qty = parseInt(this.value) || 1;
+      if (totalMYR > 0 && qty > 0) {
+        updating = true;
+        DOM.perPrice.value = fmt(totalMYR / qty, 2);
+        updating = false;
+      }
+      updateAll();
+    }
+  });
 
   async function fetchRate() {
     try {
@@ -542,23 +592,17 @@ body {
         const r = parseFloat(this.value);
         if (r && r > 0) {
           officialRate = r;
-          DOM.buyRate.textContent = fmt(r, 4);
-          calculate();
+          updateAll();
         }
       });
       rate = parseFloat(DOM.manualRate.value) || 0.61;
     }
 
     officialRate = rate;
-    DOM.buyRate.textContent = fmt(rate, 4);
     DOM.manualRate.value = rate;
-
     DOM.loading.classList.add('hidden');
-    calculate();
+    updateAll();
   }
-
-  DOM.ticketPrice.addEventListener('input', calculate);
-  DOM.ticketQty.addEventListener('input', calculate);
 
   DOM.copyBtn.addEventListener('click', function() {
     const text = DOM.scriptText.value;
