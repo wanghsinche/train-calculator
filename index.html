@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>汇率换算器</title>
+<title>Currency Converter</title>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -21,9 +21,9 @@ body {
   margin: 0 auto;
 }
 
-.flag { display: inline-block; width: 16px; height: 12px; vertical-align: middle; border-radius: 1px; margin-right: 2px; }
+.flag { display: inline-block; width: 16px; height: 12px; border-radius: 1px; vertical-align: middle; }
 
-/* ====== CLIENT SCREENSHOT AREA ====== */
+/* ====== CLIENT AREA ====== */
 .client-area {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -45,100 +45,144 @@ body {
   color: #fff;
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
-.client-header .header-flags { display: flex; align-items: center; gap: 6px; }
+.client-header .header-flags { display: flex; align-items: center; gap: 5px; }
 .client-header .header-flags img { width: 20px; height: 15px; border-radius: 1px; }
 
 .client-body {
   flex: 1;
-  padding: 24px 28px;
+  padding: 18px 20px 14px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
-/* Converter panel */
-.converter {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.converter-row { margin-bottom: 0; }
-.converter-row .currency-label {
-  font-size: 13px;
+/* Converter */
+.converter { flex-shrink: 0; }
+.converter-label {
+  font-size: 11px;
   font-weight: 500;
   color: #64748b;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
-.converter-row input {
+.converter-input-wrap { position: relative; }
+.converter-input-wrap input {
   width: 100%;
-  padding: 14px 0;
-  font-size: 36px;
+  padding: 10px 0;
+  font-size: 28px;
   font-weight: 700;
   color: #1e293b;
   border: none;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 1.5px solid #e2e8f0;
   outline: none;
   background: transparent;
   transition: border-color .2s;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
 }
-.converter-row input:focus { border-color: #1e3a5f; }
-.converter-row input::placeholder { color: #cbd5e1; font-weight: 400; font-size: 28px; }
-
-.converter-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 0 6px;
-  color: #94a3b8;
-  font-size: 20px;
-  user-select: none;
-}
-
-.converter-result .currency-label {
+.converter-input-wrap input:focus { border-color: #1e3a5f; }
+.converter-input-wrap input::placeholder { color: #cbd5e1; font-weight: 400; font-size: 22px; }
+.converter-input-wrap .ccy-badge {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
   font-size: 13px;
-  font-weight: 500;
-  color: #64748b;
-  margin-bottom: 6px;
+  font-weight: 600;
+  color: #94a3b8;
   display: flex;
   align-items: center;
   gap: 4px;
 }
-.converter-result .result-value {
-  font-size: 36px;
-  font-weight: 800;
-  color: #1e3a5f;
-  letter-spacing: -0.5px;
-  padding: 14px 0;
-  border-bottom: 2px solid #e2e8f0;
-  min-height: 72px;
+
+.converter-swap {
   display: flex;
   align-items: center;
-}
-
-/* Sell rate footer */
-.sell-rate-footer {
-  margin-top: auto;
-  text-align: right;
-  padding-top: 12px;
-}
-.sell-rate-footer .rate-line {
-  font-size: 12px;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 0 6px;
   color: #94a3b8;
+  font-size: 12px;
+}
+.converter-swap .arrow { font-size: 16px; color: #cbd5e1; }
+.converter-swap .from-to { display: flex; align-items: center; gap: 6px; }
+
+.result-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1.5px solid #e2e8f0;
+}
+.result-row .result-ccy {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.result-row .result-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1e3a5f;
+  letter-spacing: -0.3px;
+}
+.result-row .result-value.placeholder { color: #cbd5e1; font-weight: 400; font-size: 22px; }
+
+/* Currency table */
+.currency-section { margin-top: auto; padding-top: 12px; }
+.currency-section .section-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.currency-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 16px;
+}
+.currency-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #f1f4f9;
+}
+.currency-item .left { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: #475569; }
+.currency-item .right { font-size: 12px; color: #64748b; font-weight: 500; }
+.currency-item .right .val { color: #1e293b; font-weight: 600; }
+
+/* Footer */
+.client-footer {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
-}
-.sell-rate-footer .disclaimer {
+  padding: 8px 20px 12px;
   font-size: 11px;
-  color: #cbd5e1;
-  margin-top: 2px;
+  color: #94a3b8;
+}
+
+/* Manual rate */
+.manual-rate-area { display: none; flex-shrink: 0; margin-bottom: 8px; }
+.manual-rate-area.show { display: block; }
+.manual-rate-area .hint { font-size: 11px; color: #dc2626; margin-bottom: 2px; }
+.manual-rate-area input {
+  width: 100%;
+  padding: 6px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-bottom: 1.5px solid #dc2626;
+  outline: none;
+  background: transparent;
 }
 
 /* ====== DIVIDER ====== */
@@ -161,7 +205,7 @@ body {
   background: #e2e8f0;
 }
 
-/* ====== INTERNAL AREA ====== */
+/* ====== INTERNAL ====== */
 .internal-area {
   background: #f1f4f9;
   border: 1px solid #e2e8f0;
@@ -176,9 +220,8 @@ body {
   margin-bottom: 10px;
 }
 
-/* Internal form */
 .int-form { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 12px; flex-wrap: wrap; }
-.int-form .fg { flex: 1; min-width: 80px; }
+.int-form .fg { flex: 1; min-width: 70px; }
 .int-form .fg label { display: block; font-size: 11px; color: #64748b; margin-bottom: 2px; }
 .int-form .fg input {
   width: 100%;
@@ -206,7 +249,6 @@ body {
 .detail-grid .item .r { font-weight: 600; color: #1e293b; }
 .detail-grid .item .r.profit { color: #059669; }
 
-/* Script */
 .script-wrap { position: relative; }
 .script-wrap textarea {
   width: 100%;
@@ -263,21 +305,6 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { font-size: 14px; color: #64748b; }
 
-/* Manual rate */
-.manual-rate-area { display: none; margin-bottom: 10px; flex-shrink: 0; }
-.manual-rate-area.show { display: block; }
-.manual-rate-area .hint { font-size: 12px; color: #dc2626; margin-bottom: 4px; }
-.manual-rate-area input {
-  width: 100%;
-  padding: 6px 0;
-  font-size: 18px;
-  font-weight: 600;
-  border: none;
-  border-bottom: 1.5px solid #dc2626;
-  outline: none;
-  background: transparent;
-}
-
 /* Toast */
 .toast {
   position: fixed;
@@ -301,20 +328,31 @@ body {
 @media (max-width: 420px) {
   .client-header { padding: 12px 14px; }
   .client-header h1 { font-size: 14px; }
-  .client-body { padding: 16px 18px; }
-  .converter-row input { font-size: 28px; padding: 10px 0; }
-  .converter-row input::placeholder { font-size: 22px; }
-  .converter-result .result-value { font-size: 28px; padding: 10px 0; min-height: 56px; }
-  .converter-divider { padding: 4px 0; font-size: 16px; }
+  .client-body { padding: 14px 14px 10px; }
+  .converter-input-wrap input { font-size: 24px; }
+  .converter-input-wrap input::placeholder { font-size: 18px; }
+  .result-row .result-value { font-size: 24px; }
+  .result-row .result-value.placeholder { font-size: 18px; }
+  .currency-grid { grid-template-columns: 1fr 1fr; gap: 0 12px; }
+  .currency-item { padding: 4px 0; }
+  .currency-item .left { font-size: 11px; }
+  .currency-item .right { font-size: 11px; }
   .internal-area { padding: 14px; }
 }
 @media (max-height: 640px) {
   .client-header { padding: 10px 14px; }
-  .client-body { padding: 12px 18px; }
-  .converter-row input { font-size: 24px; padding: 8px 0; }
-  .converter-row input::placeholder { font-size: 18px; }
-  .converter-result .result-value { font-size: 24px; padding: 8px 0; min-height: 44px; }
-  .converter-divider { padding: 2px 0; font-size: 14px; }
+  .client-body { padding: 10px 14px 6px; }
+  .converter-input-wrap input { font-size: 20px; padding: 6px 0; }
+  .converter-input-wrap input::placeholder { font-size: 16px; }
+  .converter-swap { padding: 4px 0 2px; }
+  .result-row { padding: 6px 0; }
+  .result-row .result-value { font-size: 20px; }
+  .result-row .result-value.placeholder { font-size: 16px; }
+  .currency-section { padding-top: 6px; }
+  .currency-item { padding: 3px 0; }
+  .currency-item .left { font-size: 10px; }
+  .currency-item .right { font-size: 10px; }
+  .client-footer { padding: 4px 14px 8px; font-size: 10px; }
 }
 </style>
 </head>
@@ -322,7 +360,7 @@ body {
 
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loader"><div class="spinner"></div></div>
-  <div class="loading-text">正在获取最新汇率...</div>
+  <div class="loading-text">Loading latest rates...</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -333,7 +371,7 @@ body {
   <div class="client-area">
 
     <div class="client-header">
-      <h1>MYR ⇄ CNY 汇率换算</h1>
+      <h1>Currency Converter</h1>
       <div class="header-flags">
         <img src="https://flagcdn.com/24x18/my.png" alt="MY" loading="lazy">
         <img src="https://flagcdn.com/24x18/cn.png" alt="CN" loading="lazy">
@@ -343,45 +381,50 @@ body {
     <div class="client-body">
 
       <div class="converter">
-
-        <div class="converter-row">
-          <div class="currency-label"><img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy"> Malaysian Ringgit</div>
+        <div class="converter-label">Amount in MYR</div>
+        <div class="converter-input-wrap">
           <input type="text" id="myrInput" inputmode="decimal" placeholder="0.00">
+          <span class="ccy-badge"><img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy"> MYR</span>
         </div>
 
-        <div class="converter-divider">▼</div>
-
-        <div class="converter-result">
-          <div class="currency-label"><img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy"> Chinese Yuan</div>
-          <div class="result-value" id="cnyDisplay"><span style="color:#94a3b8;font-weight:400;font-size:20px">0.00</span></div>
+        <div class="converter-swap">
+          <span class="from-to"><img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy"> MYR</span>
+          <span class="arrow">→</span>
+          <span class="from-to"><img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy"> CNY</span>
         </div>
 
+        <div class="result-row">
+          <span class="result-ccy"><img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy"> CNY</span>
+          <span class="result-value" id="cnyDisplay">0.00</span>
+        </div>
       </div>
 
-      <!-- Manual rate -->
       <div class="manual-rate-area" id="manualRateArea">
-        <div class="hint">汇率获取失败，请手动输入</div>
+        <div class="hint">Failed to fetch rates. Enter MYR rate manually:</div>
         <input type="number" id="manualRate" step="0.0001" min="0.01" value="0.61" placeholder="0.61">
       </div>
 
-      <!-- Sell rate footer -->
-      <div class="sell-rate-footer">
-        <div class="rate-line">
-          <img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy">
-          卖出汇率
-          <span id="sellRateDisplay">—</span>
-          <img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy">
-        </div>
-        <div class="disclaimer">仅供参考，以实际出票为准</div>
+      <!-- Currency table -->
+      <div class="currency-section">
+        <div class="section-label">More Currencies</div>
+        <div class="currency-grid" id="currencyGrid"></div>
       </div>
 
     </div>
+
+    <div class="client-footer">
+      <img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy">
+      Sell rate <span id="sellRateDisplay">—</span>
+      <img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy">
+      <span style="margin-left:4px;color:#cbd5e1">Reference rates only</span>
+    </div>
+
   </div>
 
   <!-- ========== DIVIDER ========== -->
   <div class="internal-divider">内部参考</div>
 
-  <!-- ========== INTERNAL AREA ========== -->
+  <!-- ========== INTERNAL ========== -->
   <div class="internal-area">
 
     <div class="section-title">票务信息</div>
@@ -422,7 +465,7 @@ body {
 <script>
 (function() {
   let officialRate = null;
-  let quoteRate = null;
+  let allRates = {};
   let updating = false;
 
   const DOM = {
@@ -430,6 +473,7 @@ body {
     myrInput: document.getElementById('myrInput'),
     cnyDisplay: document.getElementById('cnyDisplay'),
     sellRateDisplay: document.getElementById('sellRateDisplay'),
+    currencyGrid: document.getElementById('currencyGrid'),
     manualRateArea: document.getElementById('manualRateArea'),
     manualRate: document.getElementById('manualRate'),
     perPrice: document.getElementById('perPrice'),
@@ -445,6 +489,18 @@ body {
     toast: document.getElementById('toast'),
   };
 
+  const currencies = [
+    { code: 'MYR', country: 'my', name: 'Malaysian Ringgit' },
+    { code: 'USD', country: 'us', name: 'US Dollar' },
+    { code: 'EUR', country: 'eu', name: 'Euro' },
+    { code: 'GBP', country: 'gb', name: 'British Pound' },
+    { code: 'JPY', country: 'jp', name: 'Japanese Yen' },
+    { code: 'SGD', country: 'sg', name: 'Singapore Dollar' },
+    { code: 'THB', country: 'th', name: 'Thai Baht' },
+    { code: 'AUD', country: 'au', name: 'Australian Dollar' },
+    { code: 'KRW', country: 'kr', name: 'South Korean Won' },
+  ];
+
   let toastTimer = null;
   function showToast(msg) {
     const el = DOM.toast;
@@ -456,11 +512,25 @@ body {
 
   function fmt(v, d) { return Number(v).toFixed(d); }
 
-  function formatNum(n) {
-    const s = fmt(n, 2);
-    const parts = s.split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return parts.join('.');
+  function fmtRate(v) {
+    if (v >= 1) return fmt(v, 4);
+    if (v >= 0.1) return fmt(v, 4);
+    if (v >= 0.01) return fmt(v, 4);
+    return fmt(v, 4);
+  }
+
+  function renderCurrencyGrid() {
+    let html = '';
+    for (const c of currencies) {
+      if (c.code === 'MYR') continue;
+      const rate = allRates[c.code];
+      const val = rate != null ? fmtRate(rate) : '—';
+      html += '<div class="currency-item">'
+        + '<span class="left"><img class="flag" src="https://flagcdn.com/16x12/' + c.country + '.png" alt="" loading="lazy"> ' + c.code + '</span>'
+        + '<span class="right">1 CNY = <span class="val">' + val + '</span></span>'
+        + '</div>';
+    }
+    DOM.currencyGrid.innerHTML = html;
   }
 
   function updateAll() {
@@ -469,15 +539,14 @@ body {
     const totalMYR = parseFloat(DOM.myrInput.value) || 0;
 
     if (totalMYR <= 0) {
-      DOM.cnyDisplay.innerHTML = '<span style="color:#94a3b8;font-weight:400;font-size:20px">0.00</span>';
+      DOM.cnyDisplay.textContent = '0.00';
+      DOM.cnyDisplay.className = 'result-value';
       DOM.sellRateDisplay.textContent = '—';
       clearInternal();
       return;
     }
 
     const qRate = officialRate - 0.05;
-    quoteRate = qRate;
-
     DOM.sellRateDisplay.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
 
     let cny = totalMYR / qRate;
@@ -489,16 +558,15 @@ body {
     }
 
     DOM.cnyDisplay.textContent = fmt(cny, 0);
+    DOM.cnyDisplay.className = 'result-value';
 
     // Internal
     const perPrice = parseFloat(DOM.perPrice.value) || 0;
     const intQty = qty || 0;
 
-    if (perPrice > 0 && intQty > 0) {
-      DOM.totalBadge.textContent = 'RM ' + fmt(perPrice * intQty, 2);
-    } else {
-      DOM.totalBadge.textContent = 'RM —';
-    }
+    DOM.totalBadge.textContent = perPrice > 0 && intQty > 0
+      ? 'RM ' + fmt(perPrice * intQty, 2)
+      : 'RM —';
 
     DOM.intOfficial.textContent = '1 CNY = ' + fmt(officialRate, 4) + ' MYR';
     DOM.intQuote.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
@@ -509,10 +577,8 @@ body {
     const profit = cny - cost;
     DOM.intProfit.textContent = '¥' + fmt(profit, 2);
 
-    // Script
     if (perPrice > 0 && intQty > 0) {
-      const s = `亲亲，${intQty} 张车票一共是 ${fmt(perPrice * intQty, 2)} 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ${fmt(qRate, 4)} 马币。总共是 ${cny} 元人民币。您直接转账就行，付完款我这边立刻登录马铁官网帮您出票，把 PDF 电子票发您。`;
-      DOM.scriptText.value = s;
+      DOM.scriptText.value = '亲亲，' + intQty + ' 张车票一共是 ' + fmt(perPrice * intQty, 2) + ' 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ' + fmt(qRate, 4) + ' 马币。总共是 ' + cny + ' 元人民币。您直接转账就行，付完款我这边立刻登录官网帮您处理，把 PDF 车票发您。';
     }
   }
 
@@ -526,7 +592,6 @@ body {
     DOM.scriptText.value = '';
   }
 
-  // Client MYR input → triggers full update
   DOM.myrInput.addEventListener('input', function() {
     if (updating) return;
     const totalMYR = parseFloat(this.value) || 0;
@@ -539,7 +604,6 @@ body {
     updateAll();
   });
 
-  // Internal price/qty → sync to client MYR
   function syncFromInternal() {
     if (updating) return;
     const perPrice = parseFloat(DOM.perPrice.value) || 0;
@@ -555,9 +619,8 @@ body {
   }
 
   DOM.perPrice.addEventListener('input', syncFromInternal);
+
   DOM.qtyInput.addEventListener('input', function() {
-    syncFromInternal();
-    // Also re-multiply: update perPrice display if myrInput has value
     if (!updating) {
       const totalMYR = parseFloat(DOM.myrInput.value) || 0;
       const qty = parseInt(this.value) || 1;
@@ -570,14 +633,15 @@ body {
     }
   });
 
-  async function fetchRate() {
+  async function fetchRates() {
     try {
       const res = await fetch('/api/rate');
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      const rate = data.rates.MYR;
-      if (!rate || rate <= 0) throw new Error('Invalid rate');
-      return rate;
+      allRates = data.rates || {};
+      const myr = allRates.MYR;
+      if (!myr || myr <= 0) throw new Error('Invalid MYR rate');
+      return myr;
     } catch (e) {
       console.warn('API failed:', e);
       return null;
@@ -585,13 +649,15 @@ body {
   }
 
   async function init() {
-    let rate = await fetchRate();
+    let rate = await fetchRates();
+
     if (rate === null) {
       DOM.manualRateArea.classList.add('show');
       DOM.manualRate.addEventListener('input', function() {
         const r = parseFloat(this.value);
         if (r && r > 0) {
           officialRate = r;
+          allRates.MYR = r;
           updateAll();
         }
       });
@@ -599,7 +665,10 @@ body {
     }
 
     officialRate = rate;
+    allRates.MYR = rate;
     DOM.manualRate.value = rate;
+
+    renderCurrencyGrid();
     DOM.loading.classList.add('hidden');
     updateAll();
   }
