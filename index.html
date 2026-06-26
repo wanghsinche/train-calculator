@@ -558,7 +558,7 @@ body {
     let cny = totalMYR / qRate;
     cny = Math.round(cny * 100) / 100;
 
-    DOM.cnyDisplay.textContent = fmt(cny, 0);
+    DOM.cnyDisplay.textContent = fmt(cny, 2);
     DOM.cnyDisplay.className = 'result-value';
 
     // Internal
@@ -572,14 +572,14 @@ body {
     DOM.intOfficial.textContent = '1 CNY = ' + fmt(officialRate, 4) + ' MYR';
     DOM.intQuote.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
     DOM.intMYR.textContent = 'RM ' + fmt(totalMYR, 2);
-    DOM.intCNY.textContent = '¥' + cny;
+    DOM.intCNY.textContent = '¥' + fmt(cny, 2);
 
     const cost = totalMYR / officialRate;
     const profit = cny - cost;
     DOM.intProfit.textContent = '¥' + fmt(profit, 2);
 
     if (perPrice > 0 && intQty > 0) {
-      DOM.scriptText.value = '亲亲，' + intQty + ' 张车票一共是 ' + fmt(perPrice * intQty, 2) + ' 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ' + fmt(qRate, 4) + ' 马币。总共是 ' + cny + ' 元人民币。您直接转账就行，付完款我这边立刻登录官网帮您处理，把 PDF 车票发您。';
+      DOM.scriptText.value = '亲亲，' + intQty + ' 张车票一共是 ' + fmt(perPrice * intQty, 2) + ' 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ' + fmt(qRate, 4) + ' 马币。总共是 ' + fmt(cny, 2) + ' 元人民币。您直接转账就行，付完款我这边立刻登录官网帮您处理，把 PDF 车票发您。';
     }
   }
 
