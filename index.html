@@ -212,7 +212,7 @@ body {
 
   <div class="card">
     <div class="form-group">
-      <label>车票总马币价格（MYR）</label>
+      <label>单张车票马币价格（MYR）</label>
       <input type="number" id="ticketPrice" step="0.01" min="0" placeholder="例如 120.50">
     </div>
     <div class="form-group">
@@ -278,9 +278,9 @@ body {
   function calculate() {
     if (officialRate === null) return;
 
-    const price = parseFloat(DOM.ticketPrice.value);
+    const perPrice = parseFloat(DOM.ticketPrice.value);
     const qty = parseInt(DOM.ticketQty.value) || 0;
-    if (!price || price <= 0 || !qty || qty <= 0) {
+    if (!perPrice || perPrice <= 0 || !qty || qty <= 0) {
       DOM.finalAmount.innerHTML = '<span class="currency">¥</span>—';
       DOM.profitInfo.textContent = '';
       DOM.cnyResult.textContent = '—';
@@ -288,11 +288,12 @@ body {
       return;
     }
 
+    const totalMYR = perPrice * qty;
     const qRate = officialRate - 0.05;
     quoteRate = qRate;
     DOM.quoteRate.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
 
-    let cny = price / qRate;
+    let cny = totalMYR / qRate;
     if (qty >= 4) {
       cny = Math.floor(cny / 10) * 10;
     } else {
@@ -304,12 +305,12 @@ body {
     DOM.cnyResult.textContent = '¥' + cny;
 
     // Profit
-    const cost = price / officialRate;
+    const cost = totalMYR / officialRate;
     const profit = cny - cost;
     DOM.profitInfo.textContent = '内部预计利润：¥' + fmt(profit, 2);
 
     // Script
-    const script = `亲亲，车票一共是 ${fmt(price, 2)} 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ${fmt(qRate, 4)} 马币。总共是 ${cny} 元人民币。您直接转账就行，付完款我这边立刻登录马铁官网帮您出票，把 PDF 电子票发您。`;
+    const script = `亲亲，${qty} 张车票一共是 ${fmt(totalMYR, 2)} 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ${fmt(qRate, 4)} 马币。总共是 ${cny} 元人民币。您直接转账就行，付完款我这边立刻登录马铁官网帮您出票，把 PDF 电子票发您。`;
     DOM.scriptText.value = script;
   }
 
