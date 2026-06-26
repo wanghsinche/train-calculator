@@ -202,6 +202,7 @@ body {
   font-size: 10px;
   color: #cbd5e1;
 }
+.client-footer .date { font-size: 11px; color: #94a3b8; margin-bottom: 1px; }
 
 /* Manual rate */
 .manual-rate-area { display: none; flex-shrink: 0; margin-bottom: 8px; }
@@ -454,6 +455,7 @@ body {
     </div>
 
     <div class="client-footer">
+      <div class="date" id="dateDisplay"></div>
       Reference rates only
     </div>
 
@@ -512,6 +514,7 @@ body {
     cnyDisplay: document.getElementById('cnyDisplay'),
     buyRateDisplay: document.getElementById('buyRateDisplay'),
     sellRateDisplay: document.getElementById('sellRateDisplay'),
+    dateDisplay: document.getElementById('dateDisplay'),
     currencyGrid: document.getElementById('currencyGrid'),
     manualRateArea: document.getElementById('manualRateArea'),
     manualRate: document.getElementById('manualRate'),
@@ -707,6 +710,7 @@ body {
 
     renderCurrencyGrid();
     DOM.loading.classList.add('hidden');
+    DOM.dateDisplay.textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     updateAll();
   }
 
