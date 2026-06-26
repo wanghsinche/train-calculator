@@ -316,7 +316,7 @@ body {
   // Fetch rate
   async function fetchRate() {
     try {
-      const res = await fetch('https://api.frankfurter.app/latest?from=CNY&to=MYR');
+      const res = await fetch('/api/rate');
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       const rate = data.rates.MYR;
