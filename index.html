@@ -556,12 +556,7 @@ body {
     DOM.sellRateDisplay.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
 
     let cny = totalMYR / qRate;
-    const qty = parseInt(DOM.qtyInput.value) || 0;
-    if (qty >= 4) {
-      cny = Math.floor(cny / 10) * 10;
-    } else {
-      cny = Math.round(cny);
-    }
+    cny = Math.round(cny * 100) / 100;
 
     DOM.cnyDisplay.textContent = fmt(cny, 0);
     DOM.cnyDisplay.className = 'result-value';
