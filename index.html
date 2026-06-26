@@ -108,6 +108,42 @@ body {
 .converter-swap .arrow { font-size: 16px; color: #cbd5e1; }
 .converter-swap .from-to { display: flex; align-items: center; gap: 6px; }
 
+/* Rate panel */
+.rate-panel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  margin: 6px 0 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.rate-panel .rp-item {
+  flex: 1;
+  text-align: center;
+  padding: 6px 4px;
+  border-right: 1px solid #e2e8f0;
+}
+.rate-panel .rp-item:last-child { border-right: none; }
+.rate-panel .rp-item .rp-label {
+  font-size: 10px;
+  color: #94a3b8;
+  letter-spacing: 0.3px;
+  margin-bottom: 1px;
+}
+.rate-panel .rp-item .rp-label .cc-note { color: #a3b8cc; }
+.rate-panel .rp-item .rp-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e3a5f;
+}
+.rate-panel .rp-item .rp-sub {
+  font-size: 9px;
+  color: #a3b8cc;
+  margin-top: 1px;
+}
+
 .result-row {
   display: flex;
   align-items: baseline;
@@ -161,17 +197,11 @@ body {
 /* Footer */
 .client-footer {
   flex-shrink: 0;
-  padding: 6px 20px 10px;
-  font-size: 11px;
-  color: #94a3b8;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 2px 8px;
+  padding: 4px 20px 10px;
+  text-align: right;
+  font-size: 10px;
+  color: #cbd5e1;
 }
-.client-footer .footer-left { display: flex; align-items: center; gap: 4px; margin-right: auto; color: #a3b8cc; }
-.client-footer .footer-right { display: flex; align-items: center; gap: 4px; }
 
 /* Manual rate */
 .manual-rate-area { display: none; flex-shrink: 0; margin-bottom: 8px; }
@@ -347,7 +377,8 @@ body {
   .client-body { padding: 10px 14px 6px; }
   .converter-input-wrap input { font-size: 20px; padding: 6px 0; }
   .converter-input-wrap input::placeholder { font-size: 16px; }
-  .converter-swap { padding: 4px 0 2px; }
+  .rate-panel { margin: 4px 0 6px; }
+  .rate-panel .rp-item .rp-value { font-size: 13px; }
   .result-row { padding: 6px 0; }
   .result-row .result-value { font-size: 20px; }
   .result-row .result-value.placeholder { font-size: 16px; }
@@ -355,7 +386,7 @@ body {
   .currency-item { padding: 3px 0; }
   .currency-item .left { font-size: 10px; }
   .currency-item .right { font-size: 10px; }
-  .client-footer { padding: 4px 14px 8px; font-size: 10px; flex-direction: column; align-items: flex-end; gap: 1px; }
+  .client-footer { padding: 2px 14px 8px; font-size: 9px; }
 }
 </style>
 </head>
@@ -390,10 +421,17 @@ body {
           <span class="ccy-badge"><img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy"> MYR</span>
         </div>
 
-        <div class="converter-swap">
-          <span class="from-to"><img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy"> MYR</span>
-          <span class="arrow">→</span>
-          <span class="from-to"><img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy"> CNY</span>
+        <div class="rate-panel" id="ratePanel">
+          <div class="rp-item">
+            <div class="rp-label"><img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy"> Buy rate</div>
+            <div class="rp-value" id="buyRateDisplay">—</div>
+            <div class="rp-sub">1 CNY</div>
+          </div>
+          <div class="rp-item">
+            <div class="rp-label"><img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy"> Sell rate <span class="cc-note">(incl. cc fee)</span></div>
+            <div class="rp-value" id="sellRateDisplay">—</div>
+            <div class="rp-sub">1 CNY <img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy"></div>
+          </div>
         </div>
 
         <div class="result-row">
@@ -416,13 +454,7 @@ body {
     </div>
 
     <div class="client-footer">
-      <span class="footer-left">✓ incl. credit card fee</span>
-      <span class="footer-right">
-        <img class="flag" src="https://flagcdn.com/16x12/cn.png" alt="" loading="lazy">
-        Sell rate <span id="sellRateDisplay">—</span>
-        <img class="flag" src="https://flagcdn.com/16x12/my.png" alt="" loading="lazy">
-        <span style="color:#cbd5e1;margin-left:2px">Reference rates only</span>
-      </span>
+      Reference rates only
     </div>
 
   </div>
@@ -478,6 +510,7 @@ body {
     loading: document.getElementById('loadingOverlay'),
     myrInput: document.getElementById('myrInput'),
     cnyDisplay: document.getElementById('cnyDisplay'),
+    buyRateDisplay: document.getElementById('buyRateDisplay'),
     sellRateDisplay: document.getElementById('sellRateDisplay'),
     currencyGrid: document.getElementById('currencyGrid'),
     manualRateArea: document.getElementById('manualRateArea'),
@@ -547,13 +580,16 @@ body {
     if (totalMYR <= 0) {
       DOM.cnyDisplay.textContent = '0.00';
       DOM.cnyDisplay.className = 'result-value';
+      DOM.buyRateDisplay.textContent = '—';
       DOM.sellRateDisplay.textContent = '—';
       clearInternal();
       return;
     }
 
     const qRate = officialRate - 0.05;
-    DOM.sellRateDisplay.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
+
+    DOM.buyRateDisplay.textContent = fmt(officialRate, 4);
+    DOM.sellRateDisplay.textContent = fmt(qRate, 4);
 
     let cny = totalMYR / qRate;
     cny = Math.round(cny * 100) / 100;
