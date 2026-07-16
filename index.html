@@ -562,6 +562,26 @@ body {
   }
 
   function renderCurrencyGrid() {
+
+  function estimateQty(totalMYR) {
+    return Math.max(1, Math.round(totalMYR / 110));
+  }
+
+  function calcSellRate(officialRate, totalMYR, qty) {
+    const costCNY = totalMYR / officialRate;
+    if (qty >= 4) {
+      const sellRate = officialRate - 0.05;
+      const finalCNY = Math.round(totalMYR / sellRate * 100) / 100;
+      return { sellRate, finalCNY, fee: null };
+    }
+    const fees = [0, 35, 45, 55];
+    const fee = fees[qty] || 0;
+    const finalCNY = Math.round((costCNY + fee) * 100) / 100;
+    const sellRate = totalMYR / finalCNY;
+    return { sellRate, finalCNY, fee };
+  }
+
+  function renderCurrencyGrid() {
     let html = '';
     for (const c of currencies) {
       if (c.code === 'MYR') continue;
@@ -589,36 +609,33 @@ body {
       return;
     }
 
-    const qRate = officialRate - 0.05;
+    const qty = parseInt(DOM.qtyInput.value) || 0;
+    const { sellRate, finalCNY, fee } = calcSellRate(officialRate, totalMYR, qty);
 
     DOM.buyRateDisplay.textContent = fmt(officialRate, 4);
-    DOM.sellRateDisplay.textContent = fmt(qRate, 4);
-
-    let cny = totalMYR / qRate;
-    cny = Math.round(cny * 100) / 100;
-
-    DOM.cnyDisplay.textContent = fmt(cny, 2);
+    DOM.sellRateDisplay.textContent = fmt(sellRate, 4);
+    DOM.cnyDisplay.textContent = fmt(finalCNY, 2);
     DOM.cnyDisplay.className = 'result-value';
 
     // Internal
     const perPrice = parseFloat(DOM.perPrice.value) || 0;
-    const qty = parseInt(DOM.qtyInput.value) || 0;
 
     DOM.totalBadge.textContent = perPrice > 0 && qty > 0
       ? 'RM ' + fmt(perPrice * qty, 2)
       : 'RM —';
 
     DOM.intOfficial.textContent = '1 CNY = ' + fmt(officialRate, 4) + ' MYR';
-    DOM.intQuote.textContent = '1 CNY = ' + fmt(qRate, 4) + ' MYR';
+    DOM.intQuote.textContent = '1 CNY = ' + fmt(sellRate, 4) + ' MYR';
     DOM.intMYR.textContent = 'RM ' + fmt(totalMYR, 2);
-    DOM.intCNY.textContent = '¥' + fmt(cny, 2);
+    DOM.intCNY.textContent = '¥' + fmt(finalCNY, 2);
 
-    const cost = totalMYR / officialRate;
-    const profit = cny - cost;
-    DOM.intProfit.textContent = '¥' + fmt(profit, 2);
+    const costCNY = totalMYR / officialRate;
+    const profit = finalCNY - costCNY;
+    const feeLabel = fee !== null ? ' (含服务费¥' + fee + ')' : '';
+    DOM.intProfit.textContent = '¥' + fmt(profit, 2) + feeLabel;
 
     if (perPrice > 0 && qty > 0) {
-      DOM.scriptText.value = '亲亲，' + qty + ' 张车票一共是 ' + fmt(perPrice * qty, 2) + ' 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ' + fmt(qRate, 4) + ' 马币。总共是 ' + fmt(cny, 2) + ' 元人民币。您直接转账就行，付完款我这边立刻登录官网帮您处理，把 PDF 车票发您。';
+      DOM.scriptText.value = '亲亲，' + qty + ' 张车票一共是 ' + fmt(perPrice * qty, 2) + ' 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ' + fmt(sellRate, 4) + ' 马币。总共是 ' + fmt(finalCNY, 2) + ' 元人民币。您直接转账就行，付完款我这边立刻登录官网帮您处理，把 PDF 车票发您。';
     }
   }
 
@@ -635,11 +652,10 @@ body {
   DOM.myrInput.addEventListener('input', function() {
     if (updating) return;
     const totalMYR = parseFloat(this.value) || 0;
-    const qty = parseInt(DOM.qtyInput.value) || 1;
-    if (qty > 0) {
-      updating = true;
-      DOM.perPrice.value = totalMYR > 0 ? fmt(totalMYR / qty, 2) : '';
-      updating = false;
+    if (totalMYR > 0) {
+      const qty = estimateQty(totalMYR);
+      DOM.qtyInput.value = qty;
+      DOM.perPrice.value = fmt(totalMYR / qty, 2);
     }
     updateAll();
   });
