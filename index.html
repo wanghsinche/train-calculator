@@ -589,8 +589,10 @@ body {
       return;
     }
 
-    const qRate = officialRate / 1.1;
+    const qRate = officialRate - 0.05;
+
     DOM.buyRateDisplay.textContent = fmt(officialRate, 4);
+    DOM.sellRateDisplay.textContent = fmt(qRate, 4);
 
     let cny = totalMYR / qRate;
     cny = Math.round(cny * 100) / 100;
@@ -613,7 +615,7 @@ body {
 
     const cost = totalMYR / officialRate;
     const profit = cny - cost;
-    DOM.intProfit.textContent = '¥' + fmt(profit, 2) + ' (10%)';
+    DOM.intProfit.textContent = '¥' + fmt(profit, 2);
 
     if (perPrice > 0 && qty > 0) {
       DOM.scriptText.value = '亲亲，' + qty + ' 张车票一共是 ' + fmt(perPrice * qty, 2) + ' 马币。我这边是纯代买，不收任何额外的手续费和跑腿费哦。今天的实时结算汇率是 1 人民币 = ' + fmt(qRate, 4) + ' 马币。总共是 ' + fmt(cny, 2) + ' 元人民币。您直接转账就行，付完款我这边立刻登录官网帮您处理，把 PDF 车票发您。';
